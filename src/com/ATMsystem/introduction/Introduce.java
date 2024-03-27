@@ -1,5 +1,6 @@
 package com.ATMsystem.introduction;
-
+import java.util.*;
+import java.lang.*;
 public class Introduce {
     public static void printintroduce() {
         System.out.println("-------------------------------------------------------------");
@@ -18,5 +19,5 @@ public class Introduce {
     交代管理员账号密码
     约定最小操作单位是1元
      */
-    }//测试
+    }//报错
 }
