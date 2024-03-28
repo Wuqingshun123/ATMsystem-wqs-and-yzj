@@ -14,5 +14,6 @@ public class Introduce {
         System.out.println("2、本系统无初始用户，普通用户必须先注册");
         System.out.println("3、本系统有系统管理员，登录管理员的初始账号和密码均是admin");
         System.out.println("4、本ATM系统所有操作的最小单位是1元，不要出现比1元小的输入");
+        System.out.println("5、每个新注册的用户，账户上有100元");
     }
 }
