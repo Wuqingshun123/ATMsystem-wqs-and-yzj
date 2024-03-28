@@ -9,4 +9,10 @@ public class Wait {
         scan.next();
         System.out.println("-------------------------------------------------------------");
     }
+    public static void last(){
+        Scanner scan = new Scanner(System.in);
+        System.out.print("输入任意键返回上一步:");
+        scan.next();
+        System.out.println("-------------------------------------------------------------");
+    }
 }
