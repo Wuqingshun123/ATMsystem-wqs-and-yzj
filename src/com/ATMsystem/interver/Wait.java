@@ -15,4 +15,10 @@ public class Wait {
         scan.next();
         System.out.println("-------------------------------------------------------------");
     }
+    public static void exit(){
+        Scanner scan = new Scanner(System.in);
+        System.out.print("输入任意键退出:");
+        scan.next();
+        System.out.println("-------------------------------------------------------------");
+    }
 }
