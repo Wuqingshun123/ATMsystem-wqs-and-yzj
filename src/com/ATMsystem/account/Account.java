@@ -7,5 +7,5 @@ public abstract class Account {
     public abstract void freeze();//冻结功能
     public abstract void exit();//退出登录功能
     public  abstract void changepassword();//修改密码功能
-
+    public abstract void cancelaccout();//注销功能
 }
