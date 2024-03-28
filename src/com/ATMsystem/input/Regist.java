@@ -48,6 +48,14 @@ public class Regist {
             }
             break;
         }
+        int key;
+        System.out.print("是否继续此次操作，如果继续输入1，否则输入0:");
+        key = scan.nextInt();
+        if (key == 0) {
+            System.out.println("终止操作成功");
+            Wait.last();
+            return;
+        }
         User user = new User(name, age, phone, identity, password);
         System.out.printf("%s 恭喜您注册成功\n", user.name);
         System.out.printf("您的卡号是:%s\n", user.card);
