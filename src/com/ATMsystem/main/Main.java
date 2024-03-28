@@ -15,5 +15,14 @@ public class Main {
         System.out.println("2、注册");
         System.out.println("3、忘记密码");
         int key = scan.nextInt();
+        if (key == 1){
+
+        }
+        else if (key == 2){
+            Regist.regist();
+        }
+        else if (key == 3){
+
+        }
     }
 }
