@@ -1,5 +1,7 @@
 package com.ATMsystem.main;
 
+import com.ATMsystem.account.User;
+import com.ATMsystem.input.Regist;
 import com.ATMsystem.interver.*;
 import com.ATMsystem.introduction.Introduce;
 
