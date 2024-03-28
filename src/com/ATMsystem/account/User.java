@@ -1,5 +1,7 @@
 package com.ATMsystem.account;
 
+import java.util.Random;
+
 public class User extends Account{
     public static String creatID(){
         Random random = new Random();
