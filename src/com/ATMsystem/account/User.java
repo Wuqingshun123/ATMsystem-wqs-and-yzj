@@ -3,11 +3,11 @@ package com.ATMsystem.account;
 import java.util.Random;
 
 public class User extends Account{
-    boolean isfreeze = false;
-    String name;
-    int age;
-    String phone;
-    String identity;
+    public boolean isfreeze = false;
+    public String name;
+    public int age;
+    public String phone;
+    public String identity;
     public static String creatID(){
         Random random = new Random();
         char[] ram = new char[11];
