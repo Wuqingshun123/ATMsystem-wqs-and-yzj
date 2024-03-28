@@ -1,11 +1,12 @@
 package com.ATMsystem.interver;
 
+import com.ATMsystem.account.User;
 import com.ATMsystem.input.Regist;
 
 import java.util.Scanner;
 
 public class Opration {
-    public static void initialoption(){
+    public static void initialoption(User[] users, int count){
         while(true) {
             Scanner scan = new Scanner(System.in);
             System.out.println("1、登录");
@@ -19,7 +20,7 @@ public class Opration {
 
             }
             else if (key == 2) {
-                Regist.regist();
+                Regist.regist(users,count);//注册功能入口
             }
             else if (key == 3) {
 
