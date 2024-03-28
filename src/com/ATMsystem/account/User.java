@@ -3,12 +3,20 @@ package com.ATMsystem.account;
 import java.util.Random;
 
 public class User extends Account{
-    public boolean isfreeze = false;
-    public String name;
-    public int age;
-    public String phone;
-    public String identity;
-    public static String creatID(){
+    boolean isfreeze = false;
+    public String name;//名字
+    public int age;//年龄
+    public String phone;//电话号码
+    public String identity;//身份证
+    public User(String name, int age, String phone, String identity, String password){
+        this.name = name;
+        this.age = age;
+        this.phone = phone;
+        this.identity = identity;
+        this.password.append(password);
+        this.card = creatID();
+    }//构造方法
+    public static String creatID(){//随机生成卡号
         Random random = new Random();
         char[] ram = new char[11];
         int i;
