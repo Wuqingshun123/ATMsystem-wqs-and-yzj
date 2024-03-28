@@ -38,6 +38,7 @@ public class Administorinput {
             }
             else if (key == 7){
                 Administor.exit();
+                break;
             }
         }
     }
