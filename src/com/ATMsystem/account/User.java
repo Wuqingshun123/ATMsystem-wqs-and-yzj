@@ -7,6 +7,7 @@ public class User extends Account{
     String name;
     int age;
     String phone;
+    String identity;
     public static String creatID(){
         Random random = new Random();
         char[] ram = new char[11];
