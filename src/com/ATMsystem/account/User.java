@@ -9,6 +9,7 @@ public class User extends Account{
     public String phone;//电话号码
     public String identity;//身份证
     public int money;//存款
+    public int count = 0;
     public User(String name, int age, String phone, String identity, String password){
         this.name = name;
         this.age = age;
@@ -27,16 +28,16 @@ public class User extends Account{
         }
         return new String(ram);
     }
-    public void freeze(){
+    public static void freeze(){
         System.out.println("这里只有伪代码");
         //对于用户有冻结自己账号的功能
     }
-    public void exit(){
+    public static void exit(){
         System.out.println("这里只有伪代码");
         //退出用户登录的功能
     }
 
-    public void changepassword(){
+    public static void changepassword(){
         System.out.println("这里只有伪代码");
         //修改用户密码的功能
     }
