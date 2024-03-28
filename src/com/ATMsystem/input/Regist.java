@@ -22,6 +22,7 @@ public class Regist {
         String password;
         String password1;
         System.out.println("尊敬的用户，欢迎使用注册功能");
+        System.out.println("如果要中途要退出，ATM模拟系统在最后有一个放弃选项");
         System.out.println("请在下方填写你的基本信息");
         System.out.print("您的姓名:");
         name = scan.next();
