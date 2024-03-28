@@ -8,6 +8,7 @@ public class User extends Account{
     public int age;//年龄
     public String phone;//电话号码
     public String identity;//身份证
+    public int money;//存款
     public User(String name, int age, String phone, String identity, String password){
         this.name = name;
         this.age = age;
@@ -15,6 +16,7 @@ public class User extends Account{
         this.identity = identity;
         this.password.append(password);
         this.card = creatID();
+        this.money = 100;
     }//构造方法
     public static String creatID(){//随机生成卡号
         Random random = new Random();
