@@ -2,7 +2,9 @@ package com.ATMsystem.input;
 
 import com.ATMsystem.account.User;
 import com.ATMsystem.interver.Wait;
+import com.ATMsystem.account.Administor;
 
+import java.nio.Buffer;
 import java.util.*;
 public class Regist {
     public static boolean islegal(String password){
@@ -13,7 +15,7 @@ public class Regist {
         }
         return true;
     }//判断输入是否合法
-    public static void regist(User[] users, int count){
+    public static int regist(User[] users, int count){
         Scanner scan = new Scanner(System.in);
         String name;
         int age;
@@ -26,12 +28,16 @@ public class Regist {
         System.out.println("请在下方填写你的基本信息");
         System.out.print("您的姓名:");
         name = scan.next();
+
         System.out.print("您的年龄:");
         age = scan.nextInt();
+
         System.out.print("您的电话号码:");
         phone = scan.next();
+
         System.out.print("您的身份证号:");
         identity = scan.next();
+
         while(true) {
             while(true) {
                 System.out.print("在这里输入您的登录密码:");
@@ -46,8 +52,10 @@ public class Regist {
             if (password.compareTo(password1) != 0){
                 System.out.println("两次密码输入不一致，提醒户主重新输入");
                 continue;
+            }else{
+                break;
             }
-            break;
+
         }
         int key;
         System.out.print("是否继续此次操作，如果继续输入1，否则输入0:");
@@ -55,12 +63,20 @@ public class Regist {
         if (key == 0) {
             System.out.println("终止操作成功");
             Wait.last();
-            return;
+            return count;
         }
         User user = new User(name, age, phone, identity, password);
         System.out.printf("%s 恭喜您注册成功\n", user.name);
         System.out.printf("您的卡号是:%s\n", user.card);
-        users[count++] = user;//添加用户
+        users[++count] = user;//添加用户
+
+        users[count].name = name;
+        users[count].age = age;
+        users[count].phone = phone;
+        users[count].identity = identity;
+        users[count].password.append(password);
+        users[count].card = user.card;
         Wait.last();
+        return count;
     }//注册功能的实现
 }
