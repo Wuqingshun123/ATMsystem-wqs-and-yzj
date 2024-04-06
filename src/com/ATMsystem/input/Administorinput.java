@@ -18,6 +18,7 @@ public class Administorinput {
             System.out.println("5、修改管理员密码");
             System.out.println("6、注销客户账号");
             System.out.println("7、退出登录");
+             System.out.print("您的选择:");
             int key = scan.nextInt();
             Administor administor = new Administor("admin", "admin");
             if (key == 1)
