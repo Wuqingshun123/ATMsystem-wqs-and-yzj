@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Random;
 
 public class User extends Account{
+    public String card;//账号
+    public StringBuffer password = new StringBuffer();//密码
     boolean isfreeze = false;
     public String name;//名字
     public int age;//年龄
