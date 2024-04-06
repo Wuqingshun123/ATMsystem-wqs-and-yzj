@@ -15,7 +15,7 @@ public class Regist {
         }
         return true;
     }//判断输入是否合法
-    public static int regist(User[] users, int count){
+    public static void regist(HashSet<User> users){
         Scanner scan = new Scanner(System.in);
         String name;
         int age;
@@ -63,20 +63,20 @@ public class Regist {
         if (key == 0) {
             System.out.println("终止操作成功");
             Wait.last();
-            return count;
+            return;
         }
         User user = new User(name, age, phone, identity, password);
+
+
+        user.name = name;
+        user.age = age;
+        user.phone = phone;
+        user.identity = identity;
+        user.password.append(password);
+        user.card = user.card;
+        users.add(user);
         System.out.printf("%s 恭喜您注册成功\n", user.name);
         System.out.printf("您的卡号是:%s\n", user.card);
-        users[++count] = user;//添加用户
-
-        users[count].name = name;
-        users[count].age = age;
-        users[count].phone = phone;
-        users[count].identity = identity;
-        users[count].password.append(password);
-        users[count].card = user.card;
         Wait.last();
-        return count;
     }//注册功能的实现
 }
