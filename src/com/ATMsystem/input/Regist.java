@@ -66,14 +66,6 @@ public class Regist {
             return;
         }
         User user = new User(name, age, phone, identity, password);
-
-
-        user.name = name;
-        user.age = age;
-        user.phone = phone;
-        user.identity = identity;
-        user.password.append(password);
-        user.card = user.card;
         users.add(user);
         System.out.printf("%s 恭喜您注册成功\n", user.name);
         System.out.printf("您的卡号是:%s\n", user.card);
