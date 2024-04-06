@@ -9,7 +9,7 @@ public class Administor extends Account{
         this.card = card;
         this.password.append(password);
     }
-    public static void print_all_users(HashSet<User> users){
+    public void print_all_users(HashSet<User> users){
         int i;
         Iterator<User> it = users.iterator();
         if (users.size() == 0) System.out.println("当前没有任何用户");
@@ -18,7 +18,7 @@ public class Administor extends Account{
         }
         Wait.last();
     }
-    public static void print_single_user(HashSet<User> users){
+    public void print_single_user(HashSet<User> users){
         Scanner scan = new Scanner(System.in);
         String card;
         System.out.print("输入用户的卡号:");
@@ -35,7 +35,7 @@ public class Administor extends Account{
         if (key == 0) System.out.println("当前系统无该用户");
         Wait.last();
     }
-    public static void freeze(HashSet<User> users){
+    public void freeze(HashSet<User> users){
         Scanner scan = new Scanner(System.in);
         System.out.print("请输入您要冻结的卡号:");
         String card = scan.next();
@@ -97,7 +97,7 @@ public class Administor extends Account{
             System.out.println("密码修改成功");
         }
     }
-    public static void cancelaccout(HashSet<User> users){
+    public void cancelaccout(HashSet<User> users){
         Scanner scan = new Scanner(System.in);
         System.out.println("请输入要注销的卡号:");
         String card = scan.next();
@@ -114,7 +114,7 @@ public class Administor extends Account{
         System.out.println("没有找到该卡号，请检查您的输入是否有误");
         Wait.last();
     }
-    public static void exit(){
+    public void exit(){
         Wait.exit();
     }
 
