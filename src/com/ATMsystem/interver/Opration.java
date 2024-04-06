@@ -5,10 +5,11 @@ import com.ATMsystem.input.Login;
 import com.ATMsystem.input.Regist;
 
 
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Opration {
-    public static int initialoption(User[] users, int count){
+    public static void initialoption(HashSet<User> users){
         while(true) {
             Scanner scan = new Scanner(System.in);
             System.out.println("1、登录");
@@ -19,13 +20,13 @@ public class Opration {
             int key = scan.nextInt();
             System.out.println("-------------------------------------------------------------");
             if (key == 1) {
-                Login.login(users, count);
+//                Login.login(users);
             } else if (key == 2) {
-                count = Regist.regist(users, count);//注册功能入口
+                Regist.regist(users);//注册功能入口
             } else if (key == 3) {
 
             } else if (key == 4) {
-                return count;
+                return;
             }
         }
     }
