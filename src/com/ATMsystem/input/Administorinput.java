@@ -3,10 +3,11 @@ package com.ATMsystem.input;
 import com.ATMsystem.account.Administor;
 import com.ATMsystem.account.User;
 
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Administorinput {
-    public void administorinput(User[] users, int count, Administor admin){
+    public void administorinput(HashSet<User> users, Administor admin){
         Scanner scan = new Scanner(System.in);
         while(true) {
             System.out.println("尊敬的ATM系统管理员，您好");
@@ -18,26 +19,27 @@ public class Administorinput {
             System.out.println("6、注销客户账号");
             System.out.println("7、退出登录");
             int key = scan.nextInt();
+            Administor administor = new Administor("admin", "admin");
             if (key == 1)
-                Administor.print_all_users(users, count);
+                administor.print_all_users(users);
 
             else if (key == 2)
-                Administor.print_single_user(users, count);
+                administor.print_single_user(users);
 
             else if (key == 3)
-                Administor.freeze(users, count);
+                administor.freeze(users);
 
             else if (key == 4){
-                Administor.unfreeze(users, count);
+                Administor.unfreeze(users);
             }
             else if (key == 5){
                 Administor.changepassword(admin);
             }
             else if (key == 6){
-                Administor.cancelaccout(users, count);
+                administor.cancelaccout(users);
             }
             else if (key == 7){
-                Administor.exit();
+                administor.exit();
                 break;
             }
         }
