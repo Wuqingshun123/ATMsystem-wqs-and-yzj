@@ -13,8 +13,8 @@ public class Administor extends Account{
         int i;
         Iterator<User> it = users.iterator();
         if (users.size() == 0) System.out.println("当前没有任何用户");
-        while(it.hasNext() == true){
-            System.out.printf("%s %s 存款%d元\n", it.next().name, it.next().age, it.next().money);
+        for(User user : users){
+            System.out.printf("%s %s 存款%d元\n", user.name, user.card, user.money);
         }
         Wait.last();
     }
@@ -24,10 +24,9 @@ public class Administor extends Account{
         System.out.print("输入用户的卡号:");
         card = scan.next();
         int i, key = 0;
-        Iterator<User> it = users.iterator();
-       while(it.hasNext() == true){
-            if (card.compareTo(it.next().card) == 0){
-                System.out.printf("%s %s 存款%d元\n", it.next().name, it.next().age, it.next().money);
+        for(User user : users){
+            if (card.compareTo(user.card) == 0){
+                System.out.printf("%s %s 存款%d元\n", user.name, user.age, user.money);
                 key = 1;
                 break;
             }
@@ -40,10 +39,9 @@ public class Administor extends Account{
         System.out.print("请输入您要冻结的卡号:");
         String card = scan.next();
         int i, key = 0;
-        Iterator<User> it = users.iterator();
-        while(it.hasNext() == true){
-            if (card.compareTo(it.next().card) == 0){
-                it.next().isfreeze = true;
+        for(User user : users){
+            if (card.compareTo(user.card) == 0){
+                user.isfreeze = true;
                 System.out.printf("卡号 %s 冻结成功\n", card);
                 key = 1;
                 Wait.jixu();
@@ -59,11 +57,10 @@ public class Administor extends Account{
         System.out.print("请输入您要解冻的卡号:");
         String card = scan.next();
         int i, key = 0;
-        Iterator<User> it = users.iterator();
-        while(it.hasNext() == true){
-            if (card.compareTo(it.next().card) == 0){
-                it.next().isfreeze = false;
-                it.next().count = 0;
+        for(User user : users){
+            if (card.compareTo(user.card) == 0){
+                user.isfreeze = false;
+                user.count = 0;
                 System.out.printf("卡号 %s 解冻成功\n", card);
                 key = 1;
                 Wait.jixu();
