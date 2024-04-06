@@ -9,60 +9,67 @@ public class Administor extends Account{
         this.card = card;
         this.password.append(password);
     }
-    public static void print_all_users(User[] users, int count){
+    public static void print_all_users(HashSet<User> users){
         int i;
-        if (count == 0) System.out.println("当前没有任何用户");
-        for (i = 0; i < count; i++){
-            System.out.printf("%s %s 存款%d元\n", users[i].name, users[i].age, users[i].money);
+        Iterator<User> it = users.iterator();
+        if (users.size() == 0) System.out.println("当前没有任何用户");
+        while(it.hasNext() == true){
+            System.out.printf("%s %s 存款%d元\n", it.next().name, it.next().age, it.next().money);
         }
         Wait.last();
     }
-    public static void print_single_user(User[] users, int count){
+    public static void print_single_user(HashSet<User> users){
         Scanner scan = new Scanner(System.in);
         String card;
         System.out.print("输入用户的卡号:");
         card = scan.next();
-        int i;
-        for (i = 0; i < count; i++){
-            if (card.compareTo(users[i].card) == 0){
-                System.out.printf("%s %s 存款%d元\n", users[i].name, users[i].age, users[i].money);
+        int i, key = 0;
+        Iterator<User> it = users.iterator();
+       while(it.hasNext() == true){
+            if (card.compareTo(it.next().card) == 0){
+                System.out.printf("%s %s 存款%d元\n", it.next().name, it.next().age, it.next().money);
+                key = 1;
                 break;
             }
         }
-        if (i == count) System.out.println("当前系统无该用户");
+        if (key == 0) System.out.println("当前系统无该用户");
         Wait.last();
     }
-    public static void freeze(User[] users, int count){
+    public static void freeze(HashSet<User> users){
         Scanner scan = new Scanner(System.in);
         System.out.print("请输入您要冻结的卡号:");
         String card = scan.next();
-        int i;
-        for (i = 0; i < count; i++){
-            if (card.compareTo(users[i].card) == 0){
-                users[i].isfreeze = true;
+        int i, key = 0;
+        Iterator<User> it = users.iterator();
+        while(it.hasNext() == true){
+            if (card.compareTo(it.next().card) == 0){
+                it.next().isfreeze = true;
                 System.out.printf("卡号 %s 冻结成功\n", card);
+                key = 1;
                 Wait.jixu();
             }
         }
-        if (i == count) {
+        if (key == 0) {
             System.out.println("没有找到该卡号，请检查您的输入是否有误");
             Wait.last();
         }
     }
-    public static void unfreeze(User[] users, int count){
+    public static void unfreeze(HashSet<User> users){
         Scanner scan = new Scanner(System.in);
         System.out.print("请输入您要解冻的卡号:");
         String card = scan.next();
-        int i;
-        for (i = 0; i < count; i++){
-            if (card.compareTo(users[i].card) == 0){
-                users[i].isfreeze = false;
-                users[i].count = 0;
+        int i, key = 0;
+        Iterator<User> it = users.iterator();
+        while(it.hasNext() == true){
+            if (card.compareTo(it.next().card) == 0){
+                it.next().isfreeze = false;
+                it.next().count = 0;
                 System.out.printf("卡号 %s 解冻成功\n", card);
+                key = 1;
                 Wait.jixu();
             }
         }
-        if (i == count) {
+        if (key == 0) {
             System.out.println("没有找到该卡号，请检查您的输入是否有误");
             Wait.last();
         }
@@ -90,17 +97,15 @@ public class Administor extends Account{
             System.out.println("密码修改成功");
         }
     }
-    public static void cancelaccout(User[] users, int count){
+    public static void cancelaccout(HashSet<User> users){
         Scanner scan = new Scanner(System.in);
         System.out.println("请输入要注销的卡号:");
         String card = scan.next();
         int i;
-        User temp = users[count - 1];
-        for (i = 0; i < count; i++){
-            if(card.compareTo(users[i].card) != 0){
-                users[count - 1] = users[i];
-                users[i] = temp;
-                count--;
+        Iterator<User> it = users.iterator();
+        while(it.hasNext() == true){
+            if(card.compareTo(it.next().card) == 0){
+                it.remove();
                 System.out.println("注销成功");
                 Wait.jixu();
                 return;
