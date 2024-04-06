@@ -13,10 +13,10 @@ public class Main {
     public static int count = 0;//用来记录有多少客户
     public static Administor admin = new Administor("admin", "admin");//创建管理员
     public static void main(String[] args) {
-        User[] users = new User[1000];//用来存储客户
+        HashSet<User> users = new HashSet<>();
         Scanner scan = new Scanner(System.in);
         Introduce.printintroduce();
         Wait.jixu();
-        Opration.initialoption(users, count);//初始界面
+        Opration.initialoption(users);//初始界面
     }
 }
