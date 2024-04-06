@@ -1,5 +1,6 @@
 package com.ATMsystem.account;
 
+import java.util.HashSet;
 import java.util.Random;
 
 public class User extends Account{
@@ -28,17 +29,22 @@ public class User extends Account{
         }
         return new String(ram);
     }
-    public static void freeze(){
+    public void freeze(HashSet<User> users){
         System.out.println("这里只有伪代码");
         //对于用户有冻结自己账号的功能
     }
-    public static void exit(){
+    public void exit(){
         System.out.println("这里只有伪代码");
         //退出用户登录的功能
     }
 
-    public static void changepassword(){
+    public void changepassword(){
         System.out.println("这里只有伪代码");
         //修改用户密码的功能
+    }
+
+    @Override
+    public void cancelaccout(HashSet<User> users) {
+
     }
 }
