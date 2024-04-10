@@ -11,7 +11,7 @@ public class User extends Account{
     public int age;//年龄
     public String phone;//电话号码
     public String identity;//身份证
-    public int money;//存款
+    public double money;//存款
     public int count = 0;
     public User(String name, int age, String phone, String identity, String password){
         this.name = name;
