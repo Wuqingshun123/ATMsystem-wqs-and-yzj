@@ -1,5 +1,8 @@
 package com.ATMsystem.account;
 
+import com.ATMsystem.exception.Less_than_fen;
+import com.ATMsystem.exception.Less_than_zero;
+import com.ATMsystem.exception.Transfer_myself;
 import com.ATMsystem.input.Regist;
 import com.ATMsystem.interver.Wait;
 import data.Time;
@@ -8,10 +11,7 @@ import data.record.Recordwrite;
 
 import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class User extends Account{
     public String card;//账号
@@ -54,9 +54,25 @@ public class User extends Account{
     public void deposit(User user) throws IOException {
         if(Credit.maxtransfers(user) == -1) return;
         Scanner scan = new Scanner(System.in);
-        double money;
-        System.out.print("输入您要存入的金额:");
-        money = scan.nextDouble();
+        double money = 0;
+        while(true) {
+            System.out.print("输入您要存入的金额:");
+            try {
+                money = scan.nextDouble();
+                Less_than_fen.check(money);
+                Less_than_zero.check(money);
+                break;
+            } catch (Less_than_fen e) {
+                System.out.println(e.getMessage());
+                continue;
+            }catch (Less_than_zero m){
+                System.out.println(m.getMessage());
+                continue;
+            }catch (InputMismatchException e) {
+                System.out.println("请输入实数");
+                scan.nextLine();
+            }
+        }
         if(Credit.maxwithdraw(user, money) == -1) return;
         user.money += money;
         user.credit += 4;
@@ -69,8 +85,24 @@ public class User extends Account{
         if(Credit.maxtransfers(user) == -1) return;
         Scanner scan = new Scanner(System.in);
         double money;
-        System.out.print("输入您要取出的金额:");
-        money = scan.nextDouble();
+        while(true) {
+            System.out.print("输入您要取出的金额:");
+            try {
+                money = scan.nextDouble();
+                Less_than_fen.check(money);
+                Less_than_zero.check(money);
+                break;
+            } catch (Less_than_fen e) {
+                System.out.println(e.getMessage());
+                continue;
+            }catch (Less_than_zero e) {
+                System.out.println(e.getMessage());
+                continue;
+            }catch (InputMismatchException e) {
+                System.out.println("请输入实数");
+                scan.nextLine();
+            }
+        }
         if(Credit.maxwithdraw(user, money) == -1) return;
         if (money > user.money){
             System.out.println("您的余额不足");
@@ -84,17 +116,43 @@ public class User extends Account{
         Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 取款%.2f元\n\n", Time.gettime(), user.card, user.name, money));
         Wait.jixu();
     }
-    public void transfer(HashSet<User> users, User user) throws IOException {
+    public void transfer(HashSet<User> users, User user) throws IOException, Transfer_myself {
         if(Credit.maxtransfers(user) == -1) return;
         Scanner scan = new Scanner(System.in);
-        System.out.print("输入对方卡号:");
-        String card = scan.next();
+        while(true) {
+            System.out.print("输入对方卡号:");
+            try {
+                String card = scan.next();
+                Transfer_myself.Check(card, user.card);
+                break;
+            } catch (Transfer_myself e) {
+                e.getMessage();
+                continue;
+            }
+        }
         int key = 0;
         for (User u : users){
             if (card.compareTo(u.card) == 0){
                 key = 1;
                 System.out.print("输入转账的金额:");
-                double money = scan.nextDouble();
+                while(true) {
+                    System.out.print("输入转账的金额:");
+                    try {
+                        money = scan.nextDouble();
+                        Less_than_fen.check(money);
+                        Less_than_zero.check(money);
+                        break;
+                    } catch (Less_than_fen e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }catch (Less_than_zero e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }catch (InputMismatchException e) {
+                        System.out.println("请输入实数");
+                        scan.nextLine();
+                    }
+                }
                 if (money > user.money){
                     System.out.println("您的余额不足");
                     Wait.exit();
@@ -125,14 +183,39 @@ public class User extends Account{
             Wait.jixu();
             return;
         }
-        System.out.print("输入您要贷款的金额:");
-        double money = scan.nextDouble();
+        while(true) {
+            System.out.print("输入您要贷款的金额:");
+            try {
+                money = scan.nextDouble();
+                Less_than_fen.check(money);
+                Less_than_zero.check(money);
+                break;
+            } catch (Less_than_fen e) {
+                System.out.println(e.getMessage());
+                continue;
+            } catch (Less_than_zero e) {
+                System.out.println(e.getMessage());
+                continue;
+            }catch (InputMismatchException e) {
+                System.out.println("请输入实数");
+                scan.nextLine();
+            }
+        }
         if (Credit.maxloan(user, money) == -1) return;
         double daypayback = Credit.payback(user, money);
         int day = Credit.payday(user);
         System.out.printf("贷款功能开启后每天都要还款%.2f元，还%d天\n", daypayback, day);
         System.out.print("输入1确认，输入其他撤销:");
-        int key = scan.nextInt();
+        int key = 0;
+        while (true) {
+            try {
+                key = scan.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("请输入整数");
+                scan.nextLine();
+            }
+        }
         if (key != 1) {
             Wait.exit();
             return;
@@ -158,7 +241,16 @@ public class User extends Account{
         }
         double money = user.daypayback;
         System.out.printf("是否确定还款%.2f元，输入1确定，输入其他建退出:", money);
-        int key = scan.nextInt();
+        int key = 0;
+        while (true) {
+            try {
+                key = scan.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("请输入整数");
+                scan.nextLine();
+            }
+        }
         if (key != 1) {
             Wait.exit();
             return;
@@ -178,7 +270,16 @@ public class User extends Account{
     public void freeze(HashSet<User> users, User user) throws IOException {
         Scanner scan = new Scanner(System.in);
         System.out.print("确定冻结账户输入1，否则输入任意键:");
-        int key = scan.nextInt();
+        int key;
+        while (true) {
+            try {
+                key = scan.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("请输入整数");
+                scan.nextLine();
+            }
+        }
         if (key != 1){
             Wait.exit();
             return;
