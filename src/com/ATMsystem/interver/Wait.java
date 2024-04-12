@@ -23,7 +23,7 @@ public class Wait {
     }
     public static void error(){
         Scanner scan = new Scanner(System.in);
-        System.out.print("您的输入有误，输入任意键退出:");
+        System.out.print("您的输入有误，输入任意键继续:");
         scan.next();
         System.out.println("-------------------------------------------------------------");
     }
