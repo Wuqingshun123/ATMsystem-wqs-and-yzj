@@ -2,9 +2,11 @@ package com.ATMsystem.input;
 
 import com.ATMsystem.account.Administor;
 import com.ATMsystem.account.User;
+import com.ATMsystem.interver.Wait;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Administorinput {
@@ -20,7 +22,16 @@ public class Administorinput {
                 System.out.println("6、注销客户账号");
                 System.out.println("7、退出登录");
                 System.out.print("您的选择:");
-                int key = scan.nextInt();
+                int key = 0;
+                while (true) {
+                    try {
+                        key = scan.nextInt();
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println("请输入整数");
+                        scan.nextLine();
+                    }
+                }
                 System.out.println("-------------------------------------------------------------");
                 Administor administor = new Administor("admin", "admin");
                 if (key == 1)
@@ -44,6 +55,9 @@ public class Administorinput {
                 else if (key == 7){
                     administor.exit();
                     break;
+                }
+                else{
+                    Wait.error();
                 }
             }
         }
