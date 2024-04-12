@@ -10,14 +10,15 @@ import java.io.IOException;
 import java.nio.Buffer;
 import java.util.*;
 public class Regist {
-    public static boolean islegal(String password){
+    public static boolean islegal(String password) {
         int i;
         if (password.length() != 6) return false;
-        for (i = 0; i < 6; i++){
+        for (i = 0; i < 6; i++) {
             if (Character.isDigit(password.charAt(i)) == false) return false;
         }
         return true;
     }//判断输入是否合法
+
     public static void regist(HashSet<User> users) throws IOException {
         Scanner scan = new Scanner(System.in);
         String name;
@@ -31,31 +32,62 @@ public class Regist {
         System.out.println("请在下方填写你的基本信息");
         System.out.print("您的姓名:");
         name = scan.next();
-
-        System.out.print("您的年龄:");
-        age = scan.nextInt();
-
-        System.out.print("您的电话号码:");
-        phone = scan.next();
-
-        System.out.print("您的身份证号:");
-        identity = scan.next();
-
-        while(true) {
-            while(true) {
+        while (true) {
+            System.out.print("您的年龄:");
+            try {
+                age = scan.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("请输入整数");
+                scan.nextLine();
+            }
+        }
+        while (true) {
+            int i;
+            System.out.print("您的电话号码:");
+            phone = scan.next();
+            if (phone.length() > 11) {
+                System.out.println("长度不应超过11");
+                continue;
+            }
+            for (i = 0; i < phone.length(); i++) {
+                if (Character.isDigit(phone.charAt(i)) == false) {
+                    System.out.println("输入应该全为数字");
+                    break;
+                }
+            }
+            if (i == phone.length()) break;
+        }
+        while (true) {
+            System.out.print("您的身份证号:");
+            int i;
+            identity = scan.next();
+            if (identity.length() > 11) {
+                System.out.println("长度不应超过11");
+                continue;
+            }
+            for (i = 0; i < identity.length(); i++) {
+                if (Character.isDigit(identity.charAt(i)) == false) {
+                    System.out.println("输入应该全为数字");
+                    break;
+                }
+            }
+            if (i == identity.length()) break;
+        }
+        while (true) {
+            while (true) {
                 System.out.print("在这里输入您的登录密码:");
                 password = scan.next();
                 if (Regist.islegal(password) == false) {
                     System.out.println("密码必须为6位阿拉伯数字，请重新输入");
-                }
-                else break;
+                } else break;
             }
             System.out.print("再次输入您的登录密码:");
             password1 = scan.next();
-            if (password.compareTo(password1) != 0){
+            if (password.compareTo(password1) != 0) {
                 System.out.println("两次密码输入不一致，提醒户主重新输入");
                 continue;
-            }else{
+            } else {
                 break;
             }
 
