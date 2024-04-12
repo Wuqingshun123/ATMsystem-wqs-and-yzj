@@ -1,4 +1,4 @@
-package data.record;
+package com.data.record;
 
 import data.Time;
 
