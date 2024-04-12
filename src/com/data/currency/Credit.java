@@ -47,7 +47,7 @@ public class Credit {
         else if (credit <= 80) max = 400000;
         else if (credit <= 100) max = 500000;
         if (money > max){
-            System.out.printf("您的信誉分为%d, 您最多只可以贷款%.2f\n", credit, max);
+            System.out.printf("您的信誉分为%d, 您最多只可以贷款%d元\n", credit, max);
             Wait.exit();
             return -1;
         }
