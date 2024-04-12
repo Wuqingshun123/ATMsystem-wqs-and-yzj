@@ -1,13 +1,16 @@
 package com.ATMsystem.input;
 
 import com.ATMsystem.account.User;
+import com.ATMsystem.exception.Transfer_myself;
+import com.ATMsystem.interver.Wait;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Userinput {
-    public static void userinput(HashSet<User> users, User user) throws IOException {
+    public static void userinput(HashSet<User> users, User user) throws IOException, Transfer_myself {
         Scanner scan = new Scanner(System.in);
         while(true){
             System.out.printf("尊敬的 %s ,您好\n", user.name);
@@ -23,7 +26,16 @@ public class Userinput {
             System.out.println("10、注销账号");
             System.out.println("11、退出");
             System.out.print("您的选择:");
-            int key = scan.nextInt();
+            int key = 0;
+            while (true) {
+                try {
+                    key = scan.nextInt();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("请输入整数");
+                    scan.nextLine();
+                }
+            }
             System.out.println("-------------------------------------------------------------");
             if (key == 1) user.check(user);
             else if (key == 2) user.deposit(user);
@@ -41,6 +53,9 @@ public class Userinput {
                 if (user.cancelaccout(users, user) == 0) break;
             }
             else if (key == 11) user.exit();
+            else{
+                Wait.error();
+            }
         }
     }
 }
