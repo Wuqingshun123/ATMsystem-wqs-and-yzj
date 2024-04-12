@@ -3,13 +3,15 @@ package com.ATMsystem.interver;
 import com.ATMsystem.account.User;
 import com.ATMsystem.input.Login;
 import com.ATMsystem.input.Regist;
+import com.ATMsystem.input.Userinput;
 
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Scanner;
 
 public class Opration {
-    public static void initialoption(HashSet<User> users){
+    public static void initialoption(HashSet<User> users) throws IOException {
         while(true) {
             Scanner scan = new Scanner(System.in);
             System.out.println("1、登录");
@@ -20,7 +22,9 @@ public class Opration {
             int key = scan.nextInt();
             System.out.println("-------------------------------------------------------------");
             if (key == 1) {
-//                Login.login(users);
+                for (User u : users){
+                    Userinput.userinput(users, u);
+                }
             } else if (key == 2) {
                 Regist.regist(users);//注册功能入口
             } else if (key == 3) {
