@@ -3,7 +3,10 @@ package com.ATMsystem.input;
 import com.ATMsystem.account.User;
 import com.ATMsystem.interver.Wait;
 import com.ATMsystem.account.Administor;
+import data.Time;
+import data.record.Recordwrite;
 
+import java.io.IOException;
 import java.nio.Buffer;
 import java.util.*;
 public class Regist {
@@ -15,7 +18,7 @@ public class Regist {
         }
         return true;
     }//判断输入是否合法
-    public static void regist(HashSet<User> users){
+    public static void regist(HashSet<User> users) throws IOException {
         Scanner scan = new Scanner(System.in);
         String name;
         int age;
@@ -69,6 +72,7 @@ public class Regist {
         users.add(user);
         System.out.printf("%s 恭喜您注册成功\n", user.name);
         System.out.printf("您的卡号是:%s\n", user.card);
+        Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 注册成功\n\n", Time.gettime(), user.card, user.name));
         Wait.last();
     }//注册功能的实现
 }
