@@ -4,8 +4,8 @@ import java.util.*;
 import java.lang.*;
 
 import com.ATMsystem.interver.Wait;
-import data.Time;
-import data.record.Recordwrite;
+import com.data.Time;
+import com.data.record.Recordwrite;
 
 public class Administor extends Account{
     public Administor(String card, String password){
