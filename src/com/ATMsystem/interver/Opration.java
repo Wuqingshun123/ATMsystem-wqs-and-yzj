@@ -31,9 +31,7 @@ public class Opration {
             }
             System.out.println("-------------------------------------------------------------");
             if (key == 1) {
-                for (User u : users){
-                    Userinput.userinput(users, u);
-                }
+                Login.login(users);//登录功能入口
             } else if (key == 2) {
                 Regist.regist(users);//注册功能入口
             } else if (key == 3) {
