@@ -5,9 +5,9 @@ import com.ATMsystem.exception.Less_than_zero;
 import com.ATMsystem.exception.Transfer_myself;
 import com.ATMsystem.input.Regist;
 import com.ATMsystem.interver.Wait;
-import data.Time;
+import com.data.Time;
 import data.currency.Credit;
-import data.record.Recordwrite;
+import com.data.record.Recordwrite;
 
 import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
