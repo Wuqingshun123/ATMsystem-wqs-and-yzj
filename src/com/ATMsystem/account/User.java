@@ -5,6 +5,7 @@ import com.ATMsystem.exception.Less_than_zero;
 import com.ATMsystem.exception.Transfer_myself;
 import com.ATMsystem.input.Regist;
 import com.ATMsystem.interver.Wait;
+import com.ATMsystem.main.Main;
 import com.data.Time;
 import data.currency.Credit;
 import com.data.record.Recordwrite;
@@ -16,7 +17,7 @@ import java.util.*;
 public class User extends Account{
     public String card;//账号
     public StringBuffer password = new StringBuffer();//密码
-    boolean isfreeze = false;
+    public boolean isfreeze = false;
     public String name;//名字
     public int age;//年龄
     public String phone;//电话号码
@@ -36,6 +37,24 @@ public class User extends Account{
         this.password.append(password);
         this.card = creatID();
     }//构造方法
+
+    //添加无参构造，FileLoadAndCommit类使用
+    public User() {
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        User user = (User) obj;
+        return card.equals(user.card); // ***** 比较两个User对象的卡号
+    }
+
+
     public static String creatID(){//随机生成卡号
         Random random = new Random();
         char[] ram = new char[11];
@@ -79,6 +98,7 @@ public class User extends Account{
         user.transfers += 1;
         System.out.println("存款成功");
         Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 存款%.2f元\n\n", Time.gettime(), user.card, user.name, money));
+        Main.update();
         Wait.jixu();
     }
     public void withdraw(User user) throws IOException {
@@ -114,6 +134,7 @@ public class User extends Account{
         user.transfers += 1;
         System.out.println("取款成功");
         Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 取款%.2f元\n\n", Time.gettime(), user.card, user.name, money));
+        Main.update();
         Wait.jixu();
     }
     public void transfer(HashSet<User> users, User user) throws IOException, Transfer_myself {
@@ -167,6 +188,7 @@ public class User extends Account{
                 Wait.jixu();
                 Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 向卡号%s转账%.2lf元\n\n", Time.gettime(), user.card, user.name, u.card, money));
                 Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 收到卡号:%s的转账%.2lf元\n\n", Time.gettime(), u.card, u.name, user.card, money));
+                Main.update();
                 return;
             }
         }
@@ -225,6 +247,7 @@ public class User extends Account{
         user.daypayback = daypayback;
         System.out.println("贷款成功");
         Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 贷款%.2f元\n\n", Time.gettime(), user.card, user.name, money));
+        Main.update();
         Wait.exit();
     }
     public void payback(User user) throws IOException {
@@ -265,6 +288,7 @@ public class User extends Account{
         user.ispayback = true;
         System.out.println("还款成功");
         Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 还款%.2f元\n\n", Time.gettime(), user.card, user.name, money));
+        Main.update();
         Wait.exit();
     }
     public void freeze(HashSet<User> users, User user) throws IOException {
@@ -287,13 +311,14 @@ public class User extends Account{
         user.isfreeze = true;
         System.out.println("冻结成功");
         Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 冻结卡号\n\n", Time.gettime(), user.card, user.name));
+        Main.update();
     }
 
     public void exit(){
        Wait.exit();
     }
 
-    public void changepassword(User user) {
+    public void changepassword(User user) throws IOException {
         Scanner scan = new Scanner(System.in);
         System.out.print("输入您的登录密码:");
         String password = scan.next();
@@ -321,6 +346,7 @@ public class User extends Account{
         }
         user.password = new StringBuffer(password);
         System.out.println("修改密码成功");
+        Main.update();
         Wait.exit();
     }
     @Override
@@ -364,6 +390,96 @@ public class User extends Account{
         System.out.println("注销成功！");
         Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 注销成功\n\n", Time.gettime(), user.card, user.name));
         Wait.exit();
+        Main.update();
         return 0;
     }
+    public String getaName() {
+        return this.name;
+    }
+    public  void setaName(String newName) {
+        this.name = newName;
+    }
+
+
+    public int getaAge() {
+        return this.age;
+    }
+    public  void setAge(int newAge) {
+        this.age = newAge;
+    }
+
+
+    public String getaPhone() {
+        return this.phone;
+    }
+    public  void setaPhone(String newPhone) {
+        this.name = newPhone;
+    }
+
+
+    public String getaIdentity() {return this.identity;}
+    public  void setaIdentity(String newIdentity) {this.name = newIdentity;}
+
+
+    public int getacount() {return this.count;}
+    public  void setacount(int newCount) {this.count = newCount;}
+
+
+
+    public int getaCredit() {
+        return this.credit;
+    }
+    public  void setaCredit(int newCredit) {
+        this.credit = newCredit;
+    }
+
+
+
+    public int getaTransfer() {
+        return this.transfers;
+    }
+    public  void setaTransfer(int newTransfer) {
+        this.transfers = newTransfer;
+    }
+
+
+
+    public double getaLoan() {
+        return this.loan;
+    }
+    public  void setaLoan(double newLoan) {
+        this.loan = newLoan;
+    }
+
+
+
+    public  StringBuffer getaPassword() {
+        return this.password;
+    }
+    public  void setaPassword(StringBuffer newPassword) {
+        this.password = newPassword;
+    }
+
+
+    public  double getaMoney() {
+        return this.money;
+    }
+    public  void setaMoney(Float newMoney) {
+        this.money = newMoney;
+    }
+
+    public String getaCard() {return this.card;}
+    public  void setaCard(String newCard) {this.card = newCard;}
+
+
+    public boolean getaIspayback() {return this.ispayback;}
+    public  void setaIspayback(boolean newIspayback) {this.ispayback = newIspayback;}
+
+
+    public double getaDaypayback() {return this.daypayback;}
+    public  void setaDaypayback(double newDaypayback) {this.daypayback = newDaypayback;}
+
+    public boolean getaIsfreeze() {return this.isfreeze;}
+    public  void setaIsfreeze(boolean newIsfreeze) {this.isfreeze = newIsfreeze;}
+
 }
