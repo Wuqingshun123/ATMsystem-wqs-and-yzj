@@ -1,6 +1,6 @@
 package com.data.record;
 
-import data.Time;
+import com.data.Time;
 
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
