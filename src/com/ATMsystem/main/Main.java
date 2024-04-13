@@ -6,8 +6,7 @@ import com.ATMsystem.exception.Transfer_myself;
 import com.ATMsystem.input.Regist;
 import com.ATMsystem.interver.*;
 import com.ATMsystem.introduction.Introduce;
-import data.Time;
-import data.record.Recordwrite;
+import com.data.record.Recordwrite;
 
 import java.io.*;
 import java.util.*;
