@@ -3,6 +3,7 @@ package com.ATMsystem.input;
 import com.ATMsystem.account.User;
 import com.ATMsystem.interver.Wait;
 import com.ATMsystem.account.Administor;
+import com.ATMsystem.main.Main;
 import com.data.Time;
 import com.data.record.Recordwrite;
 
@@ -102,6 +103,7 @@ public class Regist {
         }
         User user = new User(name, age, phone, identity, password);
         users.add(user);
+        Main.update();
         System.out.printf("%s 恭喜您注册成功\n", user.name);
         System.out.printf("您的卡号是:%s\n", user.card);
         Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 注册成功\n\n", Time.gettime(), user.card, user.name));
