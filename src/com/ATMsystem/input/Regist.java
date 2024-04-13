@@ -3,8 +3,8 @@ package com.ATMsystem.input;
 import com.ATMsystem.account.User;
 import com.ATMsystem.interver.Wait;
 import com.ATMsystem.account.Administor;
-import data.Time;
-import data.record.Recordwrite;
+import com.data.Time;
+import com.data.record.Recordwrite;
 
 import java.io.IOException;
 import java.nio.Buffer;
