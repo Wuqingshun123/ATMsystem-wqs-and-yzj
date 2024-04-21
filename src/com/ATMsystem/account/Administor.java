@@ -4,20 +4,32 @@ import java.util.*;
 import java.lang.*;
 
 import com.ATMsystem.interver.Wait;
+import com.ATMsystem.main.Main;
 import com.data.Time;
+import com.data.file_storage.AtmDao;
+import com.data.record.Recordread;
 import com.data.record.Recordwrite;
 
 public class Administor extends Account{
+    public static StringBuffer password;
+
+    static {
+        try {
+            password = new StringBuffer(Recordread.read2());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Administor(String card, String password){
         this.card = card;
-        this.password.append(password);
+        this.password = new StringBuffer(password);
     }
-    public void print_all_users(HashSet<User> users){
+    public void print_all_users(HashSet<User> users){ //
         int i;
-        Iterator<User> it = users.iterator();
         if (users.size() == 0) System.out.println("当前没有任何用户");
         for(User user : users){
-            System.out.printf("%s %s 存款%d元\n", user.name, user.card, user.money);
+            System.out.printf("<卡号：%s <姓名：%s <年龄：%s <信誉积分：%d分 <当前存款%.2f元 <当前欠款%.2f元\n", user.card , user.name, user.age, user.credit, user.money, user.loan);
         }
         Wait.last();
     }
@@ -29,7 +41,7 @@ public class Administor extends Account{
         int i, key = 0;
         for(User user : users){
             if (card.compareTo(user.card) == 0){
-                System.out.printf("%s %s 存款%d元\n", user.name, user.age, user.money);
+                System.out.printf("<用户姓名：%s <用户年龄：%s <用户信誉积分：%d分 <当前存款：%.2f元 <当前欠款：%.2f元\n", user.name, user.age, user.credit, user.money, user.loan);
                 key = 1;
                 break;
             }
@@ -37,7 +49,7 @@ public class Administor extends Account{
         if (key == 0) System.out.println("当前系统无该用户");
         Wait.last();
     }
-    public void freeze(HashSet<User> users, User user){
+    public void freeze(HashSet<User> users, User user) throws IOException {
         Scanner scan = new Scanner(System.in);
         System.out.print("请输入您要冻结的卡号:");
         String card = scan.next();
@@ -46,8 +58,12 @@ public class Administor extends Account{
             if (card.compareTo(u.card) == 0){
                 u.isfreeze = true;
                 System.out.printf("卡号 %s 冻结成功\n", card);
+                AtmDao.updateData(users);
+                Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 冻结卡号\n\n", Time.gettime(), u.card, u.name));
+                Main.update();
                 key = 1;
                 Wait.jixu();
+                return;
             }
         }
         if (key == 0) {
@@ -66,7 +82,8 @@ public class Administor extends Account{
                 user.count = 0;
                 System.out.printf("卡号 %s 解冻成功\n", card);
                 key = 1;
-                Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 冻结卡号\n\n", Time.gettime(), user.card, user.name));
+                Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 解冻卡号\n\n", Time.gettime(), user.card, user.name));
+                Main.update();
                 Wait.jixu();
             }
         }
@@ -76,11 +93,11 @@ public class Administor extends Account{
         }
 
     }
-    public static void changepassword(Administor admin){
+    public static void changepassword() throws IOException {
         Scanner scan = new Scanner(System.in);
         System.out.print("请输入原始密码:");
         String password = scan.next();
-        if (password.compareTo(admin.password.toString()) != 0){
+        if (password.compareTo(Administor.password.toString()) != 0){
             System.out.println("密码错误");
             Wait.last();
             return;
@@ -95,31 +112,48 @@ public class Administor extends Account{
                 Wait.jixu();
                 continue;
             }
-            admin.password = new StringBuffer(password);
+            Administor.password = new StringBuffer(password);
             System.out.println("密码修改成功");
+            Recordwrite.write2(String.format("%s 修改密码为%s\n", Time.gettime(), password));
+            Recordwrite.write3(password);
+            Wait.jixu();
+            break;
         }
     }
-    public int cancelaccout(HashSet<User> users, User user) throws IOException {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("请输入要注销的卡号:");
-        String card = scan.next();
-        int i;
-        Iterator<User> it = users.iterator();
-        while(it.hasNext() == true){
-            if(card.compareTo(it.next().card) == 0){
-                it.remove();
-                System.out.println("注销成功");
-                Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 注销成功\n\n", Time.gettime(), user.card, user.name));
-                Wait.jixu();
-                return 1;
+    public int cancelaccout(HashSet<User> users, User u) throws IOException {
+        synchronized (Administor.class) {
+            Scanner scan = new Scanner(System.in);
+            String card;
+            System.out.print("输入用户的卡号:");
+            card = scan.next();
+            int i;
+            for (User user : users) {
+                if (card.compareTo(user.card) == 0) {
+                    user.cancelaccout(users, user);
+                    return 1;
+                }
             }
+            System.out.println("当前系统无该用户");
+            Wait.last();
+            return -1;
         }
-        System.out.println("没有找到该卡号，请检查您的输入是否有误");
-        Wait.last();
-        return 0;
     }
     public void exit(){
         Wait.exit();
+    }
+    public void checksingletrade(HashSet<User> users) throws IOException {
+        Scanner scan = new Scanner(System.in);
+        String card;
+        System.out.print("输入用户的卡号:");
+        card = scan.next();
+        int i, key = 0;
+        for(User user : users){
+            if (card.compareTo(user.card) == 0){
+                User.checktrade(user);
+                break;
+            }
+        }
+        if (key == 0) System.out.println("当前系统无该用户");
     }
 
 }
