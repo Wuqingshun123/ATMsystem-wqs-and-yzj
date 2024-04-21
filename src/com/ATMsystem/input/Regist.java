@@ -1,112 +1,142 @@
 package com.ATMsystem.input;
 
 import com.ATMsystem.account.User;
+import com.ATMsystem.exception.Transfer_myself;
 import com.ATMsystem.interver.Wait;
+import javax.xml.stream.XMLInputFactory;
 import com.ATMsystem.account.Administor;
+import com.ATMsystem.account.Account;
 import com.ATMsystem.main.Main;
-import com.data.Time;
-import com.data.record.Recordwrite;
+import com.data.file_storage.AtmDao;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.util.*;
-public class Regist {
-    public static boolean islegal(String password) {
-        int i;
-        if (password.length() != 6) return false;
-        for (i = 0; i < 6; i++) {
-            if (Character.isDigit(password.charAt(i)) == false) return false;
-        }
-        return true;
-    }//判断输入是否合法
+import java.util.HashSet;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
-    public static void regist(HashSet<User> users) throws IOException {
+import static com.ATMsystem.input.Userinput.userinput;
+import static com.ATMsystem.interver.Wait.jixu;
+import static com.ATMsystem.interver.Wait.last;
+
+public class Login {
+    private static AtmDao atmDao = new AtmDao();
+    public static void login(HashSet<User> users) throws IOException, InterruptedException {
         Scanner scan = new Scanner(System.in);
-        String name;
-        int age;
-        String phone;
-        String identity;
+        String card;
         String password;
-        String password1;
-        System.out.println("尊敬的用户，欢迎使用注册功能");
-        System.out.println("如果要中途要退出，ATM模拟系统在最后有一个放弃选项");
-        System.out.println("请在下方填写你的基本信息");
-        System.out.print("您的姓名:");
-        name = scan.next();
-        while (true) {
-            System.out.print("您的年龄:");
-            try {
-                age = scan.nextInt();
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("请输入整数");
-                scan.nextLine();
-            }
-        }
-        while (true) {
-            int i;
-            System.out.print("您的电话号码:");
-            phone = scan.next();
-            if (phone.length() > 11) {
-                System.out.println("长度不应超过11");
-                continue;
-            }
-            for (i = 0; i < phone.length(); i++) {
-                if (Character.isDigit(phone.charAt(i)) == false) {
-                    System.out.println("输入应该全为数字");
-                    break;
-                }
-            }
-            if (i == phone.length()) break;
-        }
-        while (true) {
-            System.out.print("您的身份证号:");
-            int i;
-            identity = scan.next();
-            if (identity.length() > 11) {
-                System.out.println("长度不应超过11");
-                continue;
-            }
-            for (i = 0; i < identity.length(); i++) {
-                if (Character.isDigit(identity.charAt(i)) == false) {
-                    System.out.println("输入应该全为数字");
-                    break;
-                }
-            }
-            if (i == identity.length()) break;
-        }
-        while (true) {
-            while (true) {
-                System.out.print("在这里输入您的登录密码:");
+        int mistakeTimes = 3;
+        System.out.println("尊敬的用户你好，欢迎使用登录功能");
+a1:     while (true) {
+            System.out.print("请输入你的卡号:");
+            card = scan.next();
+            if (card.compareTo("admin") == 0){
+                System.out.print("请输入你的密码:");
                 password = scan.next();
-                if (Regist.islegal(password) == false) {
-                    System.out.println("密码必须为6位阿拉伯数字，请重新输入");
-                } else break;
+                if (password.compareTo(Administor.password.toString()) == 0){
+                    System.out.println("登录成功");
+                    System.out.println("-------------------------------------------------------------");
+                    Administorinput.administorinput(users);
+                    break a1;
+                }
+                else{
+                    System.out.println("密码错误");
+                    Wait.jixu();
+                }
             }
-            System.out.print("再次输入您的登录密码:");
-            password1 = scan.next();
-            if (password.compareTo(password1) != 0) {
-                System.out.println("两次密码输入不一致，提醒户主重新输入");
-                continue;
-            } else {
-                break;
+            User user = null;
+            for (User u : users){
+                if (u.card.compareTo(card) == 0){
+                    user = u;
+                    break;
+                }
             }
+            if (user != null) {
+                while (true) {
+                    if (user.isfreeze) {
+                        System.out.println("该账号已被冻结，请联系管理员解冻");
+                        Wait.exit();
+                        return;
+                    }
+                    System.out.print("请输入您的银行卡密码:");
+                    password = scan.next();
 
+                    if (password.compareTo(user.password.toString()) == 0) {
+                        //接入用户界面
+                        try {
+                            System.out.printf("%s登录成功\n", user.name);
+                            System.out.println("-------------------------------------------------------------");
+                            Userinput.userinput(users, user);
+                            return;
+                        } catch (IOException | Transfer_myself e) {
+                            System.out.println(e.getMessage());
+                            scan.nextLine();
+                        }
+                    } else {
+                        System.out.println("您输入的密码有误，请重新输入");
+                        user.count++;
+                        Main.update();
+                        if (user.count >= 3) {
+                            user.isfreeze = true;
+                            Main.update();
+                            System.out.println("你的账号:" + user.card + "已被冻结，请联系管理员申请解冻");
+                            System.out.print("输入1继续登录操作，否则终止登陆操作:");
+                            int key;
+                            while (true) {
+                                try {
+                                    key = scan.nextInt();
+                                    System.out.println("-------------------------------------------------------------");
+                                    break;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("请输入整数");
+                                    scan.nextLine();
+                                }
+                            }
+                            if (key == 1)
+                                break;
+                            else {
+                                return;
+                            }
+                        }
+                        System.out.println("今日若在输入错误" + (3 - user.count) + "次，您的账户将被冻结");
+                        int key;
+                        System.out.print("是否继续输入，如果是请继续输入1，否则输入任意结果:");
+                        while (true) {
+                            try {
+                                key = scan.nextInt();
+                                System.out.println("-------------------------------------------------------------");
+                                break;
+                            } catch (InputMismatchException e) {
+                                System.out.println("请输入整数");
+                                scan.nextLine();
+                            }
+                        }
+                        if (key == 1) {
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else {
+                System.out.println("您输入的卡号有误，请核对后输入。若尚未注册账户，请注册账户后登录。");
+                int key;
+                System.out.print("是否继续登录，如果是请继续输入 1 ，否则输入任意值:");
+                while (true) {
+                    try {
+                        key = scan.nextInt();
+                        System.out.println("-------------------------------------------------------------");
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println("请输入整数");
+                        scan.nextLine();
+                    }
+                }
+                if (key == 1)
+                    continue;
+                else
+                    return;
+            }
         }
-        int key;
-        System.out.print("是否继续此次操作，如果继续输入1，否则输入0:");
-        key = scan.nextInt();
-        if (key == 0) {
-            System.out.println("终止操作成功");
-            Wait.last();
-            return;
-        }
-        User user = new User(name, age, phone, identity, password);
-        users.add(user);
-        Main.update();
-        System.out.printf("%s 恭喜您注册成功\n", user.name);
-        System.out.printf("您的卡号是:%s\n", user.card);
-        Recordwrite.write(String.format("%s  卡号:%s 姓名:%s 注册成功\n\n", Time.gettime(), user.card, user.name));
-        Wait.last();
-    }//注册功能的实现
+    }
 }
